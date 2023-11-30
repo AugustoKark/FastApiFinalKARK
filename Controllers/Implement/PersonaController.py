@@ -1,6 +1,6 @@
 from Controllers.BaseControllerImpl import BaseControllerImpl
-from schemas.address_schema import AddressSchema
-from services.address_service import AddressService
+from Schemas.Implement.PersonaSchema import PersonaSchema
+from Services.Implement.PersonaService import PersonaService
 
 
 class PersonaController(BaseControllerImpl):

@@ -1,6 +1,13 @@
 import uvicorn
 from fastapi import FastAPI
 
+from Database.database import Database
+from Controllers.Implement.AutorController import AutorController
+from Controllers.Implement.DomicilioController import DomicilioController
+from Controllers.Implement.LibroController import LibroController
+from Controllers.Implement.LocalidadController import LocalidadController
+from Controllers.Implement.PersonaController import PersonaController
+
 # from config.database import Database
 # from controllers.address_controller import AddressController
 # from controllers.bill_controller import BillController
@@ -15,29 +22,26 @@ from fastapi import FastAPI
 def create_fastapi_app():
     fastapi_app = FastAPI()
 
-    client_controller = ClientController()
-    fastapi_app.include_router(client_controller.router, prefix="/clients")
+    
 
-    order_controller = OrderController()
-    fastapi_app.include_router(order_controller.router, prefix="/orders")
+    autor_controller = AutorController()
+    fastapi_app.include_router(autor_controller.router, prefix="/autores")
 
-    product_controller = ProductController()
-    fastapi_app.include_router(product_controller.router, prefix="/products")
+    domicilio_controller = DomicilioController()
+    fastapi_app.include_router(domicilio_controller.router, prefix="/domicilios")
 
-    address_controller = AddressController()
-    fastapi_app.include_router(address_controller.router, prefix="/addresses")
+    libro_controller = LibroController()
+    fastapi_app.include_router(libro_controller.router, prefix="/libros")
 
-    bill_controller = BillController()
-    fastapi_app.include_router(bill_controller.router, prefix="/bills")
+    localidad_controller = LocalidadController()
+    fastapi_app.include_router(localidad_controller.router, prefix="/localidades")
 
-    order_detail_controller = OrderDetailController()
-    fastapi_app.include_router(order_detail_controller.router, prefix="/order_details")
+    persona_controller = PersonaController()
+    fastapi_app.include_router(persona_controller.router, prefix="/personas")
 
-    review_controller = ReviewController()
-    fastapi_app.include_router(review_controller.router, prefix="/reviews")
+    
 
-    category_controller = CategoryController()
-    fastapi_app.include_router(category_controller.router, prefix="/categories")
+   
 
     return fastapi_app
 

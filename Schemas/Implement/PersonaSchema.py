@@ -1,6 +1,7 @@
 from typing import Optional
 
-from Schemas import BaseSchema
+from Schemas.BaseSchema import BaseSchema
+
 
 
 class PersonaSchema(BaseSchema):

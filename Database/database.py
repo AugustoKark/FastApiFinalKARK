@@ -1,18 +1,18 @@
 import os
-from dotenv import load_dotenv  
+from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
 import os
+from Models.BaseModel import Base
+from Models.Implement.Autor import Autor
+from Models.Implement.Domicilio import Domicilio
+from Models.Implement.Libro import Libro
+from Models.Implement.Localidad import Localidad
+from Models.Implement.Persona import Persona
 
-# from models.address import AddressModel  # noqa
-# from models.base_model import Base
-# from models.bill import BillModel  # noqa
-# from models.category import CategoryModel  # noqa
-# from models.client import ClientModel  # noqa
-# from models.order import OrderModel  # noqa
-# from models.order_detail import OrderDetailModel  # noqa
-# from models.product import ProductModel  # noqa
-# from models.review import ReviewModel  # noqa
+
+
+
 
 env_path = os.path.join(os.path.dirname(__file__), '../.env')
 load_dotenv(env_path)
@@ -48,6 +48,7 @@ class Database:
 
     def create_tables(self):
         try:
+            # Base.metadata.create_all(self._engine, tables=[Localidad.__table__, Domicilio.__table__, Persona.__table__, Autor.__table__, Libro.__table__])
             Base.metadata.create_all(self._engine)
             print("Tables created.")
         except Exception as e:

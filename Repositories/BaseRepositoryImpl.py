@@ -35,12 +35,12 @@ class BaseRepositoryImpl(BaseRepository):
         finally:
             session.close()
 
-    def _get_instance(self, id_key: int) -> dict:
+    def _get_instance(self, id: int) -> dict:
         with self.session_scope() as session:
-            instance = session.query(self.model).get(id_key)
+            instance = session.query(self.model).get(id)
         if instance is None:
-            self.logger.error(f"No {self.model.__name__} instance found with id {id_key}")
-            raise InstanceNotFoundError(f"No {self.model.__name__} instance found with id {id_key}")
+            self.logger.error(f"No {self.model.__name__} instance found with id {id}")
+            raise InstanceNotFoundError(f"No {self.model.__name__} instance found with id {id}")
         model_dict = _to_dict(instance)
         return model_dict
 
@@ -49,8 +49,8 @@ class BaseRepositoryImpl(BaseRepository):
             instances = session.query(self.model).all()
             return [_to_dict(instance) for instance in instances]
 
-    def find_by_id(self, id_key: int) -> dict:
-        return self._get_instance(id_key)
+    def find_by_id(self, id: int) -> dict:
+        return self._get_instance(id)
 
     def save(self, model: BaseModel) -> dict:
         with self.session_scope() as session:
@@ -60,16 +60,16 @@ class BaseRepositoryImpl(BaseRepository):
             model_dict = _to_dict(model)
         return model_dict
 
-    def update(self, id_key: int, model: BaseModel) -> dict:
+    def update(self, id: int, model: BaseModel) -> dict:
         with self.session_scope() as session:
-            instance = self._get_instance(id_key)
+            instance = self._get_instance(id)
             instance.update(model.__dict__)
             session.merge(instance)
             session.commit()
         return instance
 
-    def delete(self, id_key: int) -> None:
+    def delete(self, id: int) -> None:
         with self.session_scope() as session:
-            instance = self._get_instance(id_key)
+            instance = self._get_instance(id)
             session.delete(instance)
             session.commit()

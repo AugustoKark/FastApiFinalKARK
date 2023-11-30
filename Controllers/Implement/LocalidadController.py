@@ -1,6 +1,6 @@
 from Controllers.BaseControllerImpl import BaseControllerImpl
-from schemas.address_schema import AddressSchema
-from services.address_service import AddressService
+from Schemas.Implement.LocalidadSchema import LocalidadSchema
+from Services.Implement.LocalidadService import LocalidadService
 
 
 class LocalidadController(BaseControllerImpl):

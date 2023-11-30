@@ -15,7 +15,7 @@ class BaseService(ABC):
         pass
 
     @abstractmethod
-    def get_one(self, id_key: int) -> BaseSchema:
+    def get_one(self, id: int) -> BaseSchema:
         pass
 
     @abstractmethod
@@ -23,11 +23,11 @@ class BaseService(ABC):
         pass
 
     @abstractmethod
-    def update(self, id_key: int, schema: BaseSchema) -> BaseSchema:
+    def update(self, id: int, schema: BaseSchema) -> BaseSchema:
         pass
 
     @abstractmethod
-    def delete(self, id_key: int) -> None:
+    def delete(self, id: int) -> None:
         pass
 
     @abstractmethod

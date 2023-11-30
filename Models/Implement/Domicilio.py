@@ -10,6 +10,7 @@ class Domicilio(BaseModel):
     numero = Column(Integer)
     fk_localidad = Column(Integer, ForeignKey('Localidad.id'))
 
+    persona = relationship("Persona", back_populates="domicilio")
     localidad = relationship("Localidad", back_populates="domicilios")
 
 

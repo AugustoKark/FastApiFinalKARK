@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import Type, List
 
-from schemas.base_schema import BaseSchema
-from services.base_service import BaseService
+from Schemas.BaseSchema import BaseSchema
+from Services.BaseService import BaseService
 
 
 class BaseController(ABC):
@@ -14,7 +14,7 @@ class BaseController(ABC):
         pass
 
     @abstractmethod
-    def get_one(self, id_key: int) -> BaseSchema:
+    def get_one(self, id: int) -> BaseSchema:
         pass
 
     @abstractmethod
@@ -22,9 +22,9 @@ class BaseController(ABC):
         pass
 
     @abstractmethod
-    def update(self, id_key: int, schema: BaseSchema) -> BaseSchema:
+    def update(self, id: int, schema: BaseSchema) -> BaseSchema:
         pass
 
     @abstractmethod
-    def delete(self, id_key: int) -> None:
+    def delete(self, id: int) -> None:
         pass

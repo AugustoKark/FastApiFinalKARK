@@ -1,8 +1,8 @@
 from Controllers.BaseControllerImpl import BaseControllerImpl
-from schemas.address_schema import AddressSchema
-from services.address_service import AddressService
+from Schemas.Implement.LibroSchema import LibroSchema
+from Services.Implement.LibroService import LibroService
 
 
-class  LibroController(BaseControllerImpl):
+class LibroController(BaseControllerImpl):
     def __init__(self):
         super().__init__(LibroSchema, LibroService())

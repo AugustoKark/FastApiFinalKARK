@@ -20,8 +20,8 @@ class BaseServiceImpl(BaseService):
         model_dicts = self.repository.find_all()
         return [self.schema(**model_dict) for model_dict in model_dicts]
 
-    def get_one(self, id_key: int) -> BaseSchema:
-        model_dict = self.repository.find_by_id(id_key)
+    def get_one(self, id: int) -> BaseSchema:
+        model_dict = self.repository.find_by_id(id)
         return self.schema(**model_dict)
 
     def save(self, schema: BaseSchema) -> BaseSchema:
@@ -29,13 +29,13 @@ class BaseServiceImpl(BaseService):
         model_dict = self.repository.save(model)
         return self.schema(**model_dict)
 
-    def update(self, id_key: int, schema: BaseSchema) -> BaseSchema:
+    def update(self, id: int, schema: BaseSchema) -> BaseSchema:
         model = self.to_model(schema)
-        model_dict = self.repository.update(id_key, model)
+        model_dict = self.repository.update(id, model)
         return self.schema(**model_dict)
 
-    def delete(self, id_key: int) -> None:
-        self.repository.delete(id_key)
+    def delete(self, id: int) -> None:
+        self.repository.delete(id)
 
     def to_model(self, schema: BaseSchema) -> BaseModel:
         model_class = type(self.model) if not callable(self.model) else self.model

@@ -12,7 +12,7 @@ class BaseRepository(ABC):
         pass
 
     @abstractmethod
-    def find_by_id(self, id_key: int) -> dict:
+    def find_by_id(self, id: int) -> dict:
         pass
 
     @abstractmethod
@@ -20,9 +20,9 @@ class BaseRepository(ABC):
         pass
 
     @abstractmethod
-    def update(self, id_key: int, model: BaseModel) -> dict:
+    def update(self, id: int, model: BaseModel) -> dict:
         pass
 
     @abstractmethod
-    def delete(self, id_key: int) -> None:
+    def delete(self, id: int) -> None:
         pass

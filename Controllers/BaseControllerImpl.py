@@ -2,9 +2,11 @@ from typing import Type, List
 
 from fastapi import APIRouter, HTTPException
 
-from controllers.base_controller import BaseController
-from schemas.base_schema import BaseSchema
-from services.base_service_impl import BaseServiceImpl
+from Controllers.BaseController import BaseController
+from Schemas.BaseSchema import BaseSchema
+from Services.BaseServiceImpl import BaseServiceImpl
+
+
 
 
 class BaseControllerImpl(BaseController):
@@ -17,9 +19,9 @@ class BaseControllerImpl(BaseController):
         def get_all():
             return self.get_all()
 
-        @self.router.get("/{id_key}", response_model=self.schema)
-        def get_one(id_key: int):
-            item = self.get_one(id_key)
+        @self.router.get("/{id}", response_model=self.schema)
+        def get_one(id: int):
+            item = self.get_one(id)
             if item is None:
                 raise HTTPException(status_code=404, detail="Item not found")
             return item
@@ -28,28 +30,28 @@ class BaseControllerImpl(BaseController):
         def save(schema_in: schema):
             return self.save(schema_in)
 
-        @self.router.put("/{id_key}", response_model=self.schema)
-        def update(id_key: int, schema_in: schema):
-            item = self.update(id_key, schema_in)
+        @self.router.put("/{id}", response_model=self.schema)
+        def update(id: int, schema_in: schema):
+            item = self.update(id, schema_in)
             if item is None:
                 raise HTTPException(status_code=404, detail="Item not found")
             return item
 
-        @self.router.delete("/{id_key}")
-        def delete(id_key: int):
-            self.delete(id_key)
+        @self.router.delete("/{id}")
+        def delete(id: int):
+            self.delete(id)
 
     def get_all(self):
         return self.service.get_all()
 
-    def get_one(self, id_key: int):
-        return self.service.get_one(id_key)
+    def get_one(self, id: int):
+        return self.service.get_one(id)
 
     def save(self, schema: BaseSchema):
         return self.service.save(schema)
 
-    def update(self, id_key: int, schema: BaseSchema):
-        return self.service.update(id_key, schema)
+    def update(self, id: int, schema: BaseSchema):
+        return self.service.update(id, schema)
 
-    def delete(self, id_key: int):
-        self.service.delete(id_key)
+    def delete(self, id: int):
+        self.service.delete(id)
