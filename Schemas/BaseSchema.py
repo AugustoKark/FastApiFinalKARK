@@ -5,7 +5,7 @@ from pydantic import BaseModel
 
 class BaseSchema(BaseModel):
     class Config:
-        orm_mode = True
+        from_attributes = True
         arbitrary_types_allowed = True
 
     id: Optional[int] = None

@@ -2,25 +2,26 @@ from abc import ABC, abstractmethod
 from typing import Type, List
 
 from Models.BaseModel import BaseModel
+from Schemas.BaseSchema import BaseSchema
 
 
 class BaseRepository(ABC):
     model: Type[BaseModel]
 
     @abstractmethod
-    def find_all(self) -> List[dict]:
+    def find_all(self) -> List[BaseSchema]:
         pass
 
     @abstractmethod
-    def find_by_id(self, id: int) -> dict:
+    def find_by_id(self, id: int) -> BaseSchema:
         pass
 
     @abstractmethod
-    def save(self, model: BaseModel) -> dict:
+    def save(self, model: BaseModel) -> BaseSchema:
         pass
 
     @abstractmethod
-    def update(self, id: int, model: BaseModel) -> dict:
+    def update(self, id: int, model: BaseModel) -> BaseSchema:
         pass
 
     @abstractmethod

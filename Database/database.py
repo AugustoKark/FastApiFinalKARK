@@ -58,3 +58,10 @@ class Database:
         if hasattr(self, "_session"):
             self._session.close()
             del self._session
+
+    def drop_database(self):
+        try:
+            Base.metadata.drop_all(self._engine)
+            print("Tables dropped.")
+        except Exception as e:
+            print(f"Error dropping tables: {e}")
