@@ -7,6 +7,7 @@ from Models.BaseModel import BaseModel
 from Repositories.BaseRepository import BaseRepository
 from Schemas.BaseSchema import BaseSchema
 from sqlalchemy.orm import Session
+from typing import TypeVar
 
 
 class InstanceNotFoundError(Exception):
@@ -72,15 +73,20 @@ class BaseRepositoryImpl(BaseRepository):
             session.add(model)
             return self.schema.model_validate(model)
 
-    def update(self, id: int, model: BaseModel) -> dict:
+    def update(self, id: int, model: BaseModel) -> BaseSchema:
         with self.session_scope() as session:
             instance = session.query(self.model).get(id)
-            if instance is None:
-                raise InstanceNotFoundError(f"No instance found with id {id}")
-            instance.update(model.__dict__)
-            session.merge(instance)
-            session.commit()
-        return instance
+            if instance:
+                for key, value in model.__dict__.items():
+                    setattr(instance, key, value)
+
+                print(instance)
+                session.commit()
+                # Asegúrate de que la instancia esté en el contexto de la sesión
+                session.add(instance)
+                session.refresh(instance)  # Debe ejecutarse después del commit
+                return instance
+            return None
 
     def remove(self, id: int) -> None:
         with self.session_scope() as session:
