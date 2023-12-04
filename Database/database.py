@@ -4,11 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
 import os
 from Models.BaseModel import Base
-from Models.Implement.Autor import Autor
-from Models.Implement.Domicilio import Domicilio
-from Models.Implement.Libro import Libro
-from Models.Implement.Localidad import Localidad
-from Models.Implement.Persona import Persona
+from Models.Models import Autor, Libro, Genero, Editorial, Usuario, Prestamo
 
 
 

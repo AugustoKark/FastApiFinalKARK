@@ -2,11 +2,7 @@ import uvicorn
 from fastapi import FastAPI
 
 from Database.database import Database
-from Controllers.Implement.AutorController import AutorController
-from Controllers.Implement.DomicilioController import DomicilioController
-from Controllers.Implement.LibroController import LibroController
-from Controllers.Implement.LocalidadController import LocalidadController
-from Controllers.Implement.PersonaController import PersonaController
+from Controllers.Controllers import *
 
 from starlette import status
 from starlette.responses import JSONResponse
@@ -28,17 +24,21 @@ def create_fastapi_app():
     autor_controller = AutorController()
     fastapi_app.include_router(autor_controller.router, prefix="/autores")
 
-    domicilio_controller = DomicilioController()
-    fastapi_app.include_router(domicilio_controller.router, prefix="/domicilios")
-
     libro_controller = LibroController()
     fastapi_app.include_router(libro_controller.router, prefix="/libros")
 
-    localidad_controller = LocalidadController()
-    fastapi_app.include_router(localidad_controller.router, prefix="/localidades")
+    genero_controller = GeneroController()
+    fastapi_app.include_router(genero_controller.router, prefix="/generos")
 
-    persona_controller = PersonaController()
-    fastapi_app.include_router(persona_controller.router, prefix="/personas")
+    editorial_controller = EditorialController()
+    fastapi_app.include_router(editorial_controller.router, prefix="/editoriales")
+
+    usuario_controller = UsuarioController()
+    fastapi_app.include_router(usuario_controller.router, prefix="/usuarios")
+
+    prestamo_controller = PrestamoController()
+    fastapi_app.include_router(prestamo_controller.router, prefix="/prestamos")
+    
 
     
 

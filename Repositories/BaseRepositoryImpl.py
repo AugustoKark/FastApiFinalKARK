@@ -6,23 +6,37 @@ from Database.database import Database
 from Models.BaseModel import BaseModel
 from Repositories.BaseRepository import BaseRepository
 from Schemas.BaseSchema import BaseSchema
+from sqlalchemy.orm import Session
 
 
 class InstanceNotFoundError(Exception):
-    pass
-
-
-def _to_dict(instance: BaseModel) -> dict:
-    return {key: value for key, value in instance.__dict__.items() if key in instance.__table__.columns}
+    """
+    InstanceNotFoundError is raised when a record is not found
+    """
 
 
 class BaseRepositoryImpl(BaseRepository):
+    """
+    Class BaseRepositoryImpl implements BaseRepository
+    """
+
     def __init__(self, model: Type[BaseModel], schema: Type[BaseSchema]):
-        db = Database()
-        self.session = db.get_session()
-        self.model = model
-        self.schema = schema
+        self._model = model
+        self._schema = schema
         self.logger = logging.getLogger(__name__)
+        self._session = Database().get_session()
+
+    @property
+    def session(self) -> Session:
+        return self._session
+
+    @property
+    def model(self) -> Type[BaseModel]:
+        return self._model
+
+    @property
+    def schema(self) -> Type[BaseSchema]:
+        return self._schema
 
     @contextmanager
     def session_scope(self):
@@ -31,52 +45,50 @@ class BaseRepositoryImpl(BaseRepository):
         try:
             yield session
             session.commit()
-        except Exception:
+        except Exception as e:
+            self.logger.error("Session rollback because of error %s", e)
             session.rollback()
             raise
         finally:
             session.close()
 
-    def _get_instance(self, id: int) -> BaseSchema:
+    def find(self, id: int) -> BaseSchema:
         with self.session_scope() as session:
-            instance = session.query(self.model).get(id)
-            if instance:
-                schema = self.schema.model_validate(instance)
-        if instance is None:
-            self.logger.error(f"No {self.model.__name__} instance found with id {id}")
-            raise InstanceNotFoundError(f"No {self.model.__name__} instance found with id {id}")
-        return schema
+            model = session.query(self.model).get(id)
+            if model is None:
+                raise InstanceNotFoundError(f"No instance found with id {id}")
+            return self.schema.model_validate(model)
 
     def find_all(self) -> List[BaseSchema]:
         with self.session_scope() as session:
-            instances = session.query(self.model).all()
-            if instances:
-                schemas = [self.schema.model_validate(instance) for instance in instances]
-
-        return schemas
-
-    def find_by_id(self, id: int) -> BaseSchema:
-
-        return self._get_instance(id)
+            models = session.query(self.model).all()
+            schemas = []
+            for model in models:
+                schemas.append(self.schema.model_validate(model))
+            return schemas
 
     def save(self, model: BaseModel) -> BaseSchema:
         with self.session_scope() as session:
             session.add(model)
-            session.commit()
-            session.refresh(model)
-            schema = self.schema.model_validate(model)
-        return schema
+            return self.schema.model_validate(model)
 
     def update(self, id: int, model: BaseModel) -> dict:
         with self.session_scope() as session:
-            instance = self._get_instance(id)
+            instance = session.query(self.model).get(id)
+            if instance is None:
+                raise InstanceNotFoundError(f"No instance found with id {id}")
             instance.update(model.__dict__)
             session.merge(instance)
             session.commit()
         return instance
 
-    def delete(self, id: int) -> None:
+    def remove(self, id: int) -> None:
         with self.session_scope() as session:
-            instance = session.query(self.model).get(id)
-            session.delete(instance)
-            session.commit()
+            model = session.query(self.model).get(id)
+            if model is None:
+                raise InstanceNotFoundError(f"No instance found with id {id}")
+            session.delete(model)
+
+    def save_all(self, models: List[BaseModel]) -> List[BaseSchema]:
+        with self.session_scope() as session:
+            session.add_all(models)

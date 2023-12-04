@@ -7,29 +7,49 @@ from Schemas.BaseSchema import BaseSchema
 
 
 class BaseService(ABC):
-    repository: BaseRepository
-    schema: Type[BaseSchema]
+    """Base Service"""
+
+    @property
+    @abstractmethod
+    def repository(self) -> BaseRepository:
+        """
+        Repository to access database
+        """
+
+    @property
+    @abstractmethod
+    def schema(self) -> BaseSchema:
+        """
+        Pydantic Schema to validate data
+        """
+
+    @property
+    @abstractmethod
+    def model(self) -> BaseModel:
+        """
+        SQLAlchemy Model
+        """
 
     @abstractmethod
     def get_all(self) -> List[BaseSchema]:
-        pass
+        """Get all"""
 
     @abstractmethod
     def get_one(self, id: int) -> BaseSchema:
-        pass
+        """Get by id"""
 
     @abstractmethod
     def save(self, schema: BaseSchema) -> BaseSchema:
-        pass
+        """Save"""
 
     @abstractmethod
     def update(self, id: int, schema: BaseSchema) -> BaseSchema:
-        pass
+        """Update"""
 
     @abstractmethod
     def delete(self, id: int) -> None:
-        pass
+        """Delete"""
 
     @abstractmethod
     def to_model(self, schema: BaseSchema) -> BaseModel:
-        pass
+        """To model"""
