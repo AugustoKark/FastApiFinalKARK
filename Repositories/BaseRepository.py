@@ -55,7 +55,7 @@ class BaseRepository(ABC):
         """
 
     @abstractmethod
-    def update(self, id: int, model: BaseModel) -> BaseSchema:
+    def update(self, id: int, chnages:dict) -> BaseSchema:
         """
         Update a record
         :param id: int

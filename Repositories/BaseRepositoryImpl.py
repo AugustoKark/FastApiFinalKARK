@@ -1,7 +1,7 @@
 import logging
 from contextlib import contextmanager
 from typing import Type, List
-
+import pdb
 from Database.database import Database
 from Models.BaseModel import BaseModel
 from Repositories.BaseRepository import BaseRepository
@@ -72,21 +72,25 @@ class BaseRepositoryImpl(BaseRepository):
         with self.session_scope() as session:
             session.add(model)
             return self.schema.model_validate(model)
+   
 
-    def update(self, id: int, model: BaseModel) -> BaseSchema:
+      
+    def update(self, id: int, changes: dict) -> BaseSchema:
         with self.session_scope() as session:
-            instance = session.query(self.model).get(id)
-            if instance:
-                for key, value in model.__dict__.items():
+            # Filter the instance with the given id
+            instance = session.query(self.model).filter(self.model.id == id).first()
+            if instance is None:
+                raise InstanceNotFoundError(f"No instance found with id {id}")
+            # Update the instance with the new data
+            for key, value in changes.items():
+                if key in instance.__dict__ and value is not None:
                     setattr(instance, key, value)
+            session.commit()
+            # Retrieve the updated instance
+            # Validate the updated instance with the schema
+            schema = self.schema.model_validate(instance)
+        return schema
 
-                print(instance)
-                session.commit()
-                # Asegúrate de que la instancia esté en el contexto de la sesión
-                session.add(instance)
-                session.refresh(instance)  # Debe ejecutarse después del commit
-                return instance
-            return None
 
     def remove(self, id: int) -> None:
         with self.session_scope() as session:
