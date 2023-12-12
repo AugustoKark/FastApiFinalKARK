@@ -14,9 +14,9 @@ class BaseServiceImpl(BaseService):
     def __init__(self, repository: BaseRepository,
                  model: Type[BaseModel],
                  schema: Type[BaseSchema]):
-        self.repository = repository
-        self.model = model
-        self.schema = schema
+        self._repository = repository
+        self._model = model
+        self._schema = schema
 
     @property
     def repository(self) -> BaseRepository:
@@ -58,14 +58,4 @@ class BaseServiceImpl(BaseService):
         model_instance = model_class(**schema.model_dump())
         return model_instance
 
-    @repository.setter
-    def repository(self, value):
-        self._repository = value
-
-    @model.setter
-    def model(self, value):
-        self._model = value
-
-    @schema.setter
-    def schema(self, value):
-        self._schema = value
+    

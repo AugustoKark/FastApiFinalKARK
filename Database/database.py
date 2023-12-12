@@ -24,7 +24,7 @@ DATABASE_URI = f'postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST
 
 class Database:
     _instance = None
-    engine = create_engine(DATABASE_URI, echo=True)
+    engine = create_engine(DATABASE_URI)
     SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
     def __init__(self):

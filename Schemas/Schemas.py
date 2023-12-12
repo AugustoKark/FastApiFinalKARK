@@ -45,9 +45,9 @@ class PrestamoSchema(BaseSchema):
     fecha_prestamo: Optional[str] = None
     
 
-AutorSchema.update_forward_refs()
-LibroSchema.update_forward_refs()
-GeneroSchema.update_forward_refs()
-EditorialSchema.update_forward_refs()
-UsuarioSchema.update_forward_refs()
-PrestamoSchema.update_forward_refs()
+AutorSchema.model_rebuild()
+LibroSchema.model_rebuild()
+GeneroSchema.model_rebuild()
+EditorialSchema.model_rebuild()
+UsuarioSchema.model_rebuild()
+PrestamoSchema.model_rebuild()

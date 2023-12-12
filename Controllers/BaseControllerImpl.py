@@ -11,8 +11,8 @@ class BaseControllerImpl(BaseController):
     """Base controller implementation."""
 
     def __init__(self, schema: Type[BaseSchema], service: BaseService,):
-        self.service = service
-        self.schema = schema
+        self._service = service
+        self._schema = schema
         self.router = APIRouter()
 
         @self.router.get("/", response_model=List[schema])
@@ -71,10 +71,6 @@ class BaseControllerImpl(BaseController):
         """Delete data."""
         self.service.delete(id)
 
-    @schema.setter
-    def schema(self, value):
-        self._schema = value
+    
 
-    @service.setter
-    def service(self, value):
-        self._service = value
+   
