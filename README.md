@@ -26,8 +26,18 @@ uvicorn main:app --reload
 o bien, se puede ejecutar directamente el archivo main.py
 
 
+
+
+# Deploy
+
+A demás, la API está deployada en Render y la base de datos también se encuentra en la nube, por lo que se puede acceder a la misma desde cualquier lugar utilizando el siguiente link:
+https://apibibliotecadocker.onrender.com/
+utilizando los endpoints correspondientes.
+
 ## Uso
-Para utilizar la API, se adjunta un archivo de Postamn con los endpoints correspondientes.
+Se adjunta el archivo de Postman con los endpoints correspondientes para probar la API, tanto localmente como en la nube.
+
+
 
 
 
